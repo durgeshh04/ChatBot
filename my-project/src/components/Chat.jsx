@@ -114,9 +114,9 @@ const Chat = () => {
             {newChat.map((item, index) => (
               <div
                 key={index}
-                className="w-[60%] border border-slate-600 flex items-center mx-auto p-6 text-white mb-4"
+                className={`w-[75%] border border-slate-600 flex items-center mx-auto p-6 text-white mb-4 ${item.role === "user" && "bg-slate-800"}`}
               >
-                <span className="mr-6 p-2 rounded-full bg-slate-800">
+                <span className="mr-6 p-2 rounded-full bg-slate-500">
                   {item.role === "user" ? (
                     <svg  
                       xmlns="http://www.w3.org/2000/svg"
@@ -125,10 +125,10 @@ const Chat = () => {
                       viewBox="0 0 24 24"
                       fill="none"
                       stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      class="icon icon-tabler icons-tabler-outline icon-tabler-user"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="icon icon-tabler icons-tabler-outline icon-tabler-user"
                     >
                       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                       <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
@@ -142,10 +142,10 @@ const Chat = () => {
                       viewBox="0 0 24 24"
                       fill="none"
                       stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      class="icon icon-tabler icons-tabler-outline icon-tabler-robot"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="icon icon-tabler icons-tabler-outline icon-tabler-robot"
                     >
                       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                       <path d="M6 4m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v4a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z" />
@@ -162,7 +162,6 @@ const Chat = () => {
                 </span>
                 <div className="flex-1">
                   <div className="flex items-center">
-                    <div className="font-bold mr-2">{item.role === "user" ? "You:" : "ChatBOT:"}</div>
                     <div>{item.message}</div>
                   </div>
                 </div>
