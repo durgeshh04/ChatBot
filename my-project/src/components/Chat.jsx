@@ -111,14 +111,63 @@ const Chat = () => {
       <div className="w-[80%]">
         {newChat.length > 0 ? (
           <div className="h-[80%] overflow-y-auto scrollbar-hide pt-6">
-          {
-            newChat.map((item, index) => (
-              <div key={index} className="w-[60%] border border-slate-600 mx-auto p-6 text-white mb-4">
-                <span className=""></span>
-                <div className="mt-2">{item.message}</div>
+            {newChat.map((item, index) => (
+              <div
+                key={index}
+                className="w-[60%] border border-slate-600 flex items-center mx-auto p-6 text-white mb-4"
+              >
+                <span className="mr-6 p-2 rounded-full bg-slate-800">
+                  {item.role === "user" ? (
+                    <svg  
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="icon icon-tabler icons-tabler-outline icon-tabler-user"
+                    >
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                      <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+                      <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+                    </svg>
+                  ) : (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="icon icon-tabler icons-tabler-outline icon-tabler-robot"
+                    >
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                      <path d="M6 4m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v4a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z" />
+                      <path d="M12 2v2" />
+                      <path d="M9 12v9" />
+                      <path d="M15 12v9" />
+                      <path d="M5 16l4 -2" />
+                      <path d="M15 14l4 2" />
+                      <path d="M9 18h6" />
+                      <path d="M10 8v.01" />
+                      <path d="M14 8v.01" />
+                    </svg>
+                  )}
+                </span>
+                <div className="flex-1">
+                  <div className="flex items-center">
+                    <div className="font-bold mr-2">{item.role === "user" ? "You:" : "ChatBOT:"}</div>
+                    <div>{item.message}</div>
+                  </div>
+                </div>
               </div>
-            ))
-          }
+            ))}
           </div>
         ) : (
           <div className="h-[80%] border flex flex-col justify-center items-center text-white">
