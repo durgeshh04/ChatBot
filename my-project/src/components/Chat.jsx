@@ -8,6 +8,26 @@ const Chat = () => {
     "How to integrate API in chatbot",
     "What is OpenAI",
   ];
+
+  const newChat = [
+    {
+      role: "user",
+      message: "I want to use tailwindcss with React",
+    },
+    {
+      role: "bot",
+      message: "yes",
+    },
+    {
+      role: "user",
+      message: "Show me some sample codes",
+    },
+    {
+      role: "bot",
+      message: "Here is an example",
+    },
+  ];
+
   return (
     <div className="w-screen h-screen bg-gray-900 flex">
       <div className="w-[20%] h-full bg-gray-950 text-white p-4 flex flex-col">
@@ -89,19 +109,32 @@ const Chat = () => {
       {/* Chat Box */}
 
       <div className="w-[80%]">
-        <div className="h-[80%] border flex flex-col justify-center items-center text-white">
-          <div className="text-4xl font-bold">ChatBOT</div>
-          <div className="flex flex-wrap justify-around max-w-[900px]">
-            {example.map((item, index) => (
-              <div
-                key={index}
-                className="text-white text-lg font-light p-4 border-2 border-black rounded-lg min-w-[400px] mt-5 hover:bg-slate-800 cursor-pointer"
-              >
-                {item}
+        {newChat.length > 0 ? (
+          <div className="h-[80%] overflow-y-auto scrollbar-hide pt-6">
+          {
+            newChat.map((item, index) => (
+              <div key={index} className="w-[60%] border border-slate-600 mx-auto p-6 text-white mb-4">
+                <span className=""></span>
+                <div className="mt-2">{item.message}</div>
               </div>
-            ))}
+            ))
+          }
           </div>
-        </div>
+        ) : (
+          <div className="h-[80%] border flex flex-col justify-center items-center text-white">
+            <div className="text-4xl font-bold">ChatBOT</div>
+            <div className="flex flex-wrap justify-around max-w-[900px]">
+              {example.map((item, index) => (
+                <div
+                  key={index}
+                  className="text-white text-lg font-light p-4 border-2 border-black rounded-lg min-w-[400px] mt-5 hover:bg-slate-800 cursor-pointer"
+                >
+                  {item}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Search Box  */}
 
