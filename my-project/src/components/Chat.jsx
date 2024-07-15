@@ -6,7 +6,9 @@ const Chat = () => {
     <div className="w-screen h-screen bg-gray-900 flex">
       <div className="w-[20%] h-full bg-gray-950 text-white p-4 flex flex-col">
         <div className="h-[5%] mb-4">
-          <button className="w-full h-[50px] border rounded font-bold">+ New Chat</button>
+          <button className="w-full h-[50px] border rounded font-bold">
+            + New Chat
+          </button>
         </div>
         <div className="h-[75%] mt-5 overflow-y-auto scrollbar-hide">
           <div className="space-y-3">
@@ -80,7 +82,11 @@ const Chat = () => {
 
       {/* Chat Box */}
 
-      <div className="w-[80%] h-full bg-gray-900"></div>
+      <div className="w-[80%]">
+        <div className="h-[80%] border flex flex-col justify-center items-center text-white">
+          <div className="text-4xl font-bold">Chat</div>
+        </div>
+      </div>
     </div>
   );
 };
