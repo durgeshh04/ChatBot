@@ -54,19 +54,22 @@ Before you begin, ensure you have met the following requirements:
 ## Project Structure
 
 ```sh
-ChatBot/
+ChatBOT/my-project
 ├── public/
-│   ├── index.html
+│   ├── 
 │   └── ...
 ├── src/
 │   ├── components/
-│   │   ├── Chat.js
-│   │   ├── ChatInput.js
-│   │   └── ChatMessage.js
-│   ├── App.js
-│   ├── index.js
-│   └── ...
+│   │   ├── Chat.jsx
+│   │   ├── Chat.css
+│   │   └── 
+│   ├── App.jsx
+│   └── index.html
+|
+|
+|
+├── ChatBOT/server
 ├── .env
 ├── package.json
-├── README.md
-└── ...
+├── app.js
+└── README.md
