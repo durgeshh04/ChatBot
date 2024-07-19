@@ -1,198 +1,141 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import "./Chat.css"; // Import your CSS file
 
-const Chat = () => {
-  const example = [
-    "How to get started with React",
-    "How to use taiwindcss with React",
-    "How to integrate API in chatbot",
-    "What is OpenAI",
-  ];
+const example = [
+  "How to use Prompts",
+  "How to use Tailwind CSS with React",
+  "How to integrate API in ChatGPT",
+  "What is OpenAI",
+];
 
-  const newChat = [
-    {
-      role: "user",
-      message: "I want to use tailwindcss with React",
-    },
-    {
-      role: "bot",
-      message: "yes",
-    },
-    {
-      role: "user",
-      message: "Show me some sample codes",
-    },
-    {
-      role: "bot",
-      message: "Here is an example",
-    },
-  ];
+const Chat = () => {
+  const [newchat, setnewChat] = useState([]);
+  const [input, setInput] = useState('');
+
+  const handledata = async () => {
+    if (input.trim()) {
+      setnewChat([...newchat, { role: 'user', content: input }]);
+      setInput('');
+
+      try {
+        const response = await fetch('http://localhost:8000/api/chat', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            messages: [
+              ...newchat,
+              { role: 'user', content: input },
+            ] 
+          })
+        });
+        const resdata = await response.json();
+        console.log(resdata, "Response received");
+
+        if (resdata?.choices?.[0]?.message) {
+          setnewChat([...newchat, { role: 'user', content: input }, resdata.choices[0].message]);
+        } else {
+          console.error("No message received from API");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+  }
 
   return (
-    <div className="w-screen h-screen bg-gray-900 flex">
-      <div className="w-[20%] h-full bg-gray-950 text-white p-4 flex flex-col">
-        <div className="h-[5%] mb-4">
-          <button className="w-full h-[50px] border rounded font-bold">
+    <div className="h-screen w-screen flex bg-[white]">
+      <div className="w-[20%] h-screen bg-[#202123] text-white p-4">
+        <div className="h-[5%] font-semibold">
+          <button className="w-full h-[50px] border rounded">
             + New Chat
           </button>
         </div>
-        <div className="h-[75%] mt-5 overflow-y-auto scrollbar-hide">
-          <div className="space-y-3">
-            {[...Array(13).keys()].map((item, index) => (
-              <div
-                key={index}
-                className="py-3 rounded-lg font-light flex items-center hover:bg-slate-800 px-8 cursor-pointer"
-              >
-                <span className="mr-2">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="icon icon-tabler icons-tabler-outline icon-tabler-message"
-                  >
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                    <path d="M8 9h8" />
-                    <path d="M8 13h6" />
-                    <path d="M18 4a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-5l-5 3v-3h-2a3 3 0 0 1 -3 -3v-8a3 3 0 0 1 3 -3h12z" />
-                  </svg>
-                </span>
-                My Chat History {item + 1}
-              </div>
-            ))}
-          </div>
+        <div className="h-[75%] overflow-scroll hide-scroll-bar mb-2">
+          {[1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13].map((item, index) => (
+            <div key={index} className="py-3 rounded text-center mt-5 font-semibold flex items-center hover:bg-slate-500 px-8 cursor-pointer">
+              <span className="mr-2">
+                <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-message" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M8 9h8"></path>
+                  <path d="M8 13h6"></path>
+                  <path d="M18 4a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-5l-5 3v-3h-2a3 3 0 0 1 -3 -3v-8a3 3 0 0 1 3 -3h12z"></path>
+                </svg>
+              </span>
+              My Chat history
+            </div>
+          ))}
         </div>
-        <div className="h-[20%] overflow-none scrollbar-hide border-t-2">
-          <div className="space-y-3 mt-2">
-            {[
-              { icon: "settings", text: "Settings" },
-              { icon: "user", text: "Account" }
-            ].map((item, index) => (
-              <div
-                key={index}
-                className="py-3 rounded-lg font-light flex items-center hover:bg-slate-800 px-8 cursor-pointer"
-              >
-                <span className="mr-2">
-                  {item.icon === "settings" ? (
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="icon icon-tabler icons-tabler-outline icon-tabler-settings"
-                    >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                      <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z" />
-                      <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
-                    </svg>
-                  ) : (
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="icon icon-tabler icons-tabler-outline icon-tabler-user"
-                    >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                      <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
-                      <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-                    </svg>
-                  )}
-                </span>
-                {item.text}
-              </div>
-            ))}
+        <div className="h-[20%] overflow-scroll hide-scroll-bar border-t">
+          <div className="py-3 rounded text-center mt-5 font-semibold flex items-center hover:bg-slate-500 px-8 cursor-pointer">
+            <span className="mr-2">
+              <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-adjustments" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <path d="M4 10a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
+                <path d="M6 4v4"></path>
+                <path d="M6 12v8"></path>
+                <path d="M10 16a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
+                <path d="M12 4v10"></path>
+                <path d="M12 18v2"></path>
+                <path d="M16 7a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
+                <path d="M18 4v1"></path>
+                <path d="M18 9v11"></path>
+              </svg>
+            </span>
+            Settings
+          </div>
+          <div className="py-3 rounded text-center mt-5 flex items-center font-semibold hover:bg-slate-500 px-8 cursor-pointer">
+            <span className="mr-2">
+              <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-users" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path>
+                <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                <path d="M21 21v-2a4 4 0 0 0 -3 -3.85"></path>
+              </svg>
+            </span>
+            Account
           </div>
         </div>
       </div>
-
-
-      {/* Chat Box */}
-
       <div className="w-[80%]">
-        {newChat.length > 0 ? (
-          <div className="h-[80%] overflow-y-auto scrollbar-hide pt-6">
-            {newChat.map((item, index) => (
-              <div
-                key={index}
-                className={`w-[75%] border border-slate-600 flex items-center mx-auto p-6 text-white mb-4 ${item.role === "user" && "bg-slate-800"}`}
-              >
-                <span className="mr-6 p-2 rounded-full bg-slate-500">
-                  {item.role === "user" ? (
-                    <svg  
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="icon icon-tabler icons-tabler-outline icon-tabler-user"
-                    >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                      <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
-                      <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+        {newchat.length > 0 ? (
+          <div className="h-[80%] overflow-scroll hide-scroll-bar pt-6">
+            {newchat.map((item, index) => (
+              <div key={index} className={`w-[60%] border-slate-600 flex items-center mx-auto p-6 text-black ${item.role === "assistant" && "bg-slate-200 rounded"}`}>
+                <span className="mr-6 p-2 bg-slate-500 rounded-full">
+                  {item.role === "user" ? 
+                    <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                      <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"></path>
+                      <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
                     </svg>
-                  ) : (
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="icon icon-tabler icons-tabler-outline icon-tabler-robot"
-                    >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                      <path d="M6 4m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v4a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z" />
-                      <path d="M12 2v2" />
-                      <path d="M9 12v9" />
-                      <path d="M15 12v9" />
-                      <path d="M5 16l4 -2" />
-                      <path d="M15 14l4 2" />
-                      <path d="M9 18h6" />
-                      <path d="M10 8v.01" />
-                      <path d="M14 8v.01" />
+                  : (
+                    <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-robot" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                      <path d="M6 4m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v4a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path>
+                      <path d="M12 2v2"></path>
+                      <path d="M9 12v9"></path>
+                      <path d="M15 12v9"></path>
+                      <path d="M5 16l4 -2"></path>
+                      <path d="M15 14l4 2"></path>
+                      <path d="M9 18h6"></path>
+                      <path d="M10 8v.01"></path>
+                      <path d="M14 8v.01"></path>
                     </svg>
                   )}
                 </span>
-                <div className="flex-1">
-                  <div className="flex items-center">
-                    <div>{item.message}</div>
-                  </div>
-                </div>
+                <div>{item.content}</div>
               </div>
             ))}
           </div>
         ) : (
-          <div className="h-[80%] border flex flex-col justify-center items-center text-white">
-            <div className="text-4xl font-bold">ChatBOT</div>
+          <div className="h-[80%] border flex flex-col justify-center items-center text-black">
+            <div className="text-4xl font-bold">ChatGPT</div>
             <div className="flex flex-wrap justify-around max-w-[900px]">
               {example.map((item, index) => (
-                <div
-                  key={index}
-                  className="text-white text-lg font-light p-4 border-2 border-black rounded-lg min-w-[400px] mt-5 hover:bg-slate-800 cursor-pointer"
-                >
+                <div key={index} className="text-lg font-light p-4 border border-black rounded min-w-[400px] mt-4 hover:bg-slate-300" onClick={() => setInput(item)}>
                   {item}
                 </div>
               ))}
@@ -200,30 +143,25 @@ const Chat = () => {
           </div>
         )}
 
-        {/* Search Box  */}
-
         <div className="h-[20%]">
           <div className="flex flex-col items-center justify-center h-full w-full">
-            <div className="relative w-[75%]">
+            <div className="w-[75%] flex justify-center relative">
               <input
                 type="text"
-                className="w-full rounded-full border-2 border-black p-4 pr-10 outline-none"
-                placeholder="Message ChatBOT"
+                onChange={(e) => setInput(e.target.value)}
+                className="w-full rounded text-black p-4 pr-16 bg-gray-300"
+                placeholder="Type Best prompt"
+                value={input}
               />
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="32"
-                height="32"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                class="icon icon-tabler icons-tabler-filled icon-tabler-circle-arrow-up"
-                className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
-              >
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M17 3.34a10 10 0 1 1 -14.995 8.984l-.005 -.324l.005 -.324a10 10 0 0 1 14.995 -8.336zm-4.98 3.66l-.163 .01l-.086 .016l-.142 .045l-.113 .054l-.07 .043l-.095 .071l-.058 .054l-4 4l-.083 .094a1 1 0 0 0 1.497 1.32l2.293 -2.293v5.586l.007 .117a1 1 0 0 0 1.993 -.117v-5.585l2.293 2.292l.094 .083a1 1 0 0 0 1.32 -1.497l-4 -4l-.082 -.073l-.089 -.064l-.113 -.062l-.081 -.034l-.113 -.034l-.112 -.02l-.098 -.006z" />
-              </svg>
+              <span className="absolute right-4 top-4 cursor-pointer" onClick={() => input.trim() ? handledata() : undefined}>
+                <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-brand-telegram" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M15 10l-4 4l6 6l4 -16l-18 7l4 2l2 6l3 -4"></path>
+                </svg>
+              </span>
             </div>
-            <small className="text-white mt-2">Ai Can Generate Anything</small>
+
+            <small className="text-black mt-2">AI Can Generate Anything</small>
           </div>
         </div>
       </div>

@@ -1,7 +1,6 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
-// const fetch = require('node-fetch');
 
 const port = 8000;
 
@@ -43,8 +42,13 @@ app.post('/api/chat', async (req, res) => {
     });
 
     const resdata = await response.json();
-    console.log(resdata);
-    res.send(resdata);
+
+    if (response.ok) {
+      res.send(resdata);
+    } else {
+      console.error("API Error:", resdata);
+      res.status(response.status).send(resdata);
+    }
   } catch (error) {
     console.error("Error:", error);
     res.status(500).send({ error: "Something went wrong" });
