@@ -121,6 +121,7 @@ const Chat = () => {
         </div>
       </div>
 
+
       {/* Chat Box */}
 
       <div className="w-[80%]">
